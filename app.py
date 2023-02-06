@@ -15,7 +15,7 @@ def get_lat_lon(
         ) -> list:
     '''Get the latlong of a city name'''
     gecoder_address = f'http://api.openweathermap.org/geo/1.0/direct?q={city_name}&appid={API_key}'
-    geocoder_response = requests.get(geocoder_API)
+    geocoder_response = requests.get(geocoder_address)
     data = geocoder_response.text
     data = json.loads(data)
     lat = data[0]['lat']
