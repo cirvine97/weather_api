@@ -41,21 +41,17 @@ def get_weather(
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-@app.route("/login", methods=["POST", "GET"])
-def login():
+@app.route("/", methods=["POST", "GET"])
+def input_city():
     if request.method == "POST":
-        user = request.form["nm"]
-        return redirect(url_for("user", usr=user))
+        city = request.form["nm"]
+        return redirect(url_for("weather_report", city_name=city))
     else:
-        return render_template("login.html")
+        return render_template("input.html")
 
-@app.route("/<usr>")
-def user(usr):
-    return f"<h1>{usr}</h1>"
+@app.route("/weather/<city_name>")
+def weather_report(city_name):
+    return f"<h1>{city_name}</h1>"
 
 if __name__ == "__main__":
     app.run(debug=True)
