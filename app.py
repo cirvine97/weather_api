@@ -3,16 +3,13 @@ import requests
 import json
 import config
 
-# Inputs
-city_name = config.city
-API_key = config.API_key
 
 def get_lat_lon(
         city_name:str, 
         API_key:str
 ) -> list:
     '''Get the latlong of a city name'''
-    gecoder_address = f'http://api.openweathermap.org/geo/1.0/direct?q={city_name}&appid={API_key}'
+    geocoder_address = f'http://api.openweathermap.org/geo/1.0/direct?q={city_name}&appid={API_key}'
     geocoder_response = requests.get(geocoder_address)
     data = geocoder_response.text
     data = json.loads(data)
@@ -26,7 +23,7 @@ def get_weather(
 ) -> dict:
     
     # Get the lat lon of the city 
-    lat_lon = get_lat_long(city_name=city_name,
+    lat_lon = get_lat_lon(city_name=city_name,
                            API_key=API_key
                            )
 
@@ -51,7 +48,8 @@ def input_city():
 
 @app.route("/weather/<city_name>")
 def weather_report(city_name):
-    return f"<h1>{city_name}</h1>"
+    weather = get_weather(city_name=city_name, API_key=config.API_key)
+    return weather
 
 if __name__ == "__main__":
     app.run(debug=True)
