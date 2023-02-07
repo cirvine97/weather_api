@@ -80,21 +80,15 @@ def input_city():
     app.logger.error('Error log information')
     if request.method == "POST":
         city = request.form["nm"]
-        return redirect(url_for("weather_report", city_name=city))
+        try:
+            return surfaced_values(city,
+                                config.API_key,
+                                config.temperature_unit)
+        except ValueError:
+            return render_template("invalid_input.html")
     else:
         app.logger.info("Info log information")
         return render_template("input.html")
-
-@app.route("/weather/<city_name>")
-def weather_report(city_name):
-    app.logger.error("Error log information")
-    try:
-        values = surfaced_values(city_name,
-                                config.API_key,
-                                config.temperature_unit)
-        return values
-    except ValueError:
-        return redirect(url_for('input_city'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
