@@ -35,6 +35,33 @@ def get_weather(
 
     return data
 
+def surfaced_values(
+    city_name:str,
+    API_key:str,
+    temperature_units:str
+) -> dict:
+    weather_json = get_weather(city_name, API_key)
+    description = weather_json['weather'][0]['description']
+    icon = weather_json['weather'][0]['icon']
+    kelvin_temp = weather_json['main']['temp']
+
+    if temperature_units == 'Celsius':
+        temperature = kelvin_temp - 273.15
+    elif temperature_units == 'Farenheit':
+        temperature = (kelvin_temp - 273.15)*(9/5) + 32
+    else:
+        raise ValueError('Temperature units must be Celsius or Farenheit')
+    
+    results = {
+        "Description": description,
+        "Icon": icon,
+        "Temperature": temperature
+    }
+    # Convert to json
+    results_json = json.dumps(results)
+
+    return results_json
+
 
 app = Flask(__name__)
 
