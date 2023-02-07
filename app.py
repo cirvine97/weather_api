@@ -75,8 +75,10 @@ def input_city():
 
 @app.route("/weather/<city_name>")
 def weather_report(city_name):
-    weather = get_weather(city_name=city_name, API_key=config.API_key)
-    return weather
+    values = surfaced_values(city_name,
+                             config.API_key,
+                             config.temperature_unit)
+    return values
 
 if __name__ == "__main__":
     app.run(debug=True)
