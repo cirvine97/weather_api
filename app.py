@@ -14,6 +14,9 @@ def get_lat_lon(
     geocoder_response = requests.get(geocoder_address)
     data = geocoder_response.text
     data = json.loads(data)
+    # Catch the case that an invalid city name has been provided
+    if len(data) == 0:
+        raise ValueError("Invalid city name")
     lat = data[0]['lat']
     lon = data[0]['lon']
     return [lat, lon]
