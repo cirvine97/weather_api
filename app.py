@@ -79,8 +79,11 @@ logging.basicConfig(filename='record.log',
 def input_city():
     app.logger.error('Error log information')
     if request.method == "POST":
-        city = request.form["nm"]
-        return redirect(url_for("weather_report", city_name=city))
+        try:
+            city = request.form["nm"]
+            return redirect(url_for("weather_report", city_name=city))
+        except ValueError:
+            return render_template("invalid_input.html")
     else:
         app.logger.info("Info log information")
         return render_template("input.html")
