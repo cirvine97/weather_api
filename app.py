@@ -79,11 +79,8 @@ logging.basicConfig(filename='record.log',
 def input_city():
     app.logger.error('Error log information')
     if request.method == "POST":
-        try:
-            city = request.form["nm"]
-            return redirect(url_for("weather_report", city_name=city))
-        except ValueError:
-            return render_template("invalid_input.html")
+        city = request.form["nm"]
+        return redirect(url_for("weather_report", city_name=city))
     else:
         app.logger.info("Info log information")
         return render_template("input.html")
@@ -91,10 +88,13 @@ def input_city():
 @app.route("/weather/<city_name>")
 def weather_report(city_name):
     app.logger.error("Error log information")
-    values = surfaced_values(city_name,
-                             config.API_key,
-                             config.temperature_unit)
-    return values
+    try:
+        values = surfaced_values(city_name,
+                                config.API_key,
+                                config.temperature_unit)
+        return values
+    except ValueError:
+        return redirect(url_for('input_city'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
