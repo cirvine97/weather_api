@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, request, render_template
 import requests
 import json
 import config
@@ -37,7 +37,6 @@ def get_weather(
     weather_response = requests.get(weather_address)
     data = weather_response.text
     data = json.loads(data)
-
     return data
 
 def surfaced_values(
@@ -75,7 +74,6 @@ def surfaced_values(
     }
     # Convert to json
     results_json = json.dumps(results)
-
     return results_json
 
 
@@ -89,6 +87,7 @@ logging.basicConfig(filename='record.log',
 @app.route("/", methods=["POST", "GET"])
 def input_city():
     app.logger.error('Error log information')
+    app.logger.info("Info log information")
     if request.method == "POST":
         city = request.form["nm"]
         try:
@@ -98,7 +97,6 @@ def input_city():
         except ValueError:
             return render_template("invalid_input.html")
     else:
-        app.logger.info("Info log information")
         return render_template("input.html")
 
 
