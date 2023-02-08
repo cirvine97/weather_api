@@ -16,9 +16,12 @@ def get_lat_lon(
     data = geocoder_response.text
     data = json.loads(data)
 
-    # Find bad API key 
-    second_index = list(data)[1]
-    if second_index == 'message':
+    # Catch invalid API key if ouput is wrong dimension
+    try:
+        second_index = list(data)[1]
+    except IndexError:
+        pass
+    else:
         raise NameError("Invalid API Key")
     # Catch the case that an invalid city name has been provided
     if len(data) == 0:
