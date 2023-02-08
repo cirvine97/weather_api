@@ -74,12 +74,15 @@ def surfaced_values(
         temperature = (kelvin_temp - 273.15)*(9/5) + 32
     else:
         # Choose Celsius by default so API does not crash 
+        temperature_units = 'Celsius'
         temperature = kelvin_temp - 273.15
+    # Round the temperature 
+    temperature = round(temperature, 2)
     
     results = {
         "Description": description,
         "Icon": icon,
-        "Temperature": temperature
+        "Temperature": f"{temperature} {temperature_units[0]}"
     }
     # Convert to json
     results_json = json.dumps(results)

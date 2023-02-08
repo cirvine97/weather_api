@@ -19,12 +19,12 @@ def test_borderline_input():
 def test_bad_input():
     input = ' ubefihwbefw222 '
     with pytest.raises(ValueError) as exception_info:
-        result = get_weather(input, config.API_key)
+        get_weather(input, config.API_key)
     # Ensure the error message is right. 
     assert exception_info.match("Invalid city name")
 
 def test_bad_API_key():
     input = 'Sydney'
     with pytest.raises(NameError) as exception_info:
-        result = get_weather(input, 0)
+        get_weather(input, 0)
     assert exception_info.match("Invalid API Key")

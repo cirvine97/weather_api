@@ -21,12 +21,12 @@ def test_borderline_input():
 def test_bad_input():
     input = ' *292 ii '
     with pytest.raises(ValueError) as exception_info:
-        result = get_lat_lon(input, config.API_key)
+        get_lat_lon(input, config.API_key)
     # Ensure the error message is right. 
     assert exception_info.match("Invalid city name")
 
 def test_bad_API_key():
     input = 'New York City'
     with pytest.raises(NameError) as exception_info:
-        result = get_lat_lon(input, 0)
+        get_lat_lon(input, 0)
     assert exception_info.match("Invalid API Key")
