@@ -3,6 +3,7 @@ import requests
 import json
 import config
 import logging
+import re
 
 
 def get_lat_lon(
@@ -50,12 +51,22 @@ def surfaced_values(
     icon = weather_json['weather'][0]['icon']
     kelvin_temp = weather_json['main']['temp']
 
+    # Account for erroneous temp unit input 
+    temperature_units = str(temperature_units)
+    temperature_units = re.sub(
+        '[^a-zA-Z]',
+        '',
+        temperature_units
+    )
+    temperature_units = temperature_units.title()
+
     if temperature_units == 'Celsius':
         temperature = kelvin_temp - 273.15
     elif temperature_units == 'Farenheit':
         temperature = (kelvin_temp - 273.15)*(9/5) + 32
     else:
-        raise ValueError('Temperature units must be Celsius or Farenheit')
+        # Choose Celsius by default so API does not crash 
+        temperature = kelvin_temp - 273.15
     
     results = {
         "Description": description,
@@ -89,6 +100,7 @@ def input_city():
     else:
         app.logger.info("Info log information")
         return render_template("input.html")
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
